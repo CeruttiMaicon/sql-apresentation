@@ -17,9 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        // Criar estados e cidades primeiro
+        $this->call(EstadoCidadeSeeder::class);
+
+        // Exemplo: Criar 2 milhões de clientes
+        // Ou com quantidade customizada:
+        (new ClienteSeeder())->quantidade(2000000)->run();
     }
 }
