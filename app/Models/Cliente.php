@@ -20,5 +20,6 @@ class Cliente extends Model
         'email',
         'sexo',
         'celular',
+        'endereco_id',
     ];
 }

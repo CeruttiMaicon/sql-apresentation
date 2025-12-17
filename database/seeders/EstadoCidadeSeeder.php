@@ -51,15 +51,15 @@ class EstadoCidadeSeeder extends Seeder
             }
 
             foreach ($estadoData['cidades'] as $cidadeNome) {
-                // Usar firstOrCreate para evitar duplicatas (verifica por nome e id_estado)
+                // Usar firstOrCreate para evitar duplicatas (verifica por nome e estado_id)
                 $cidade = Cidade::firstOrCreate(
                     [
                         'nome' => $cidadeNome,
-                        'id_estado' => $estado->id,
+                        'estado_id' => $estado->id,
                     ],
                     [
                         'nome' => $cidadeNome,
-                        'id_estado' => $estado->id,
+                        'estado_id' => $estado->id,
                     ]
                 );
 

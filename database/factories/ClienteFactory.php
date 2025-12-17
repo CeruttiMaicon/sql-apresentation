@@ -20,10 +20,10 @@ class ClienteFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'sexo' => fake()->randomElement(['M', 'F']),
-            'celular' => fake()->numerify('(##) #####-####'),
+            'nome' => fake('pt_BR')->name(),
+            'email' => fake('pt_BR')->unique()->safeEmail(),
+            'sexo' => fake('pt_BR')->randomElement(['M', 'F']),
+            'celular' => fake('pt_BR')->numerify('(##) #####-####'),
         ];
     }
 
@@ -42,21 +42,23 @@ class ClienteFactory extends Factory
             }
 
             // Buscar uma cidade do estado selecionado
-            $cidade = Cidade::where('id_estado', $estado->id)->inRandomOrder()->first();
+            $cidade = Cidade::where('estado_id', $estado->id)->inRandomOrder()->first();
 
             // Se não houver cidades para esse estado, criar uma (fallback)
             if (!$cidade) {
                 $cidade = Cidade::factory()->create([
-                    'id_estado' => $estado->id,
+                    'estado_id' => $estado->id,
                 ]);
             }
 
             // Criar Endereco relacionado ao Cliente
-            Endereco::factory()->create([
-                'cliente_id' => $cliente->id,
-                'id_cidade' => $cidade->id,
-                'id_estado' => $estado->id,
+            $endereco = Endereco::factory()->create([
+                'cidade_id' => $cidade->id,
+                'estado_id' => $estado->id,
             ]);
+
+            // Associar o endereço ao cliente
+            $cliente->update(['endereco_id' => $endereco->id]);
         });
     }
 }

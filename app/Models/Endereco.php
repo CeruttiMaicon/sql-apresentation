@@ -16,9 +16,8 @@ class Endereco extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'cliente_id',
-        'id_cidade',
-        'id_estado',
+        'cidade_id',
+        'estado_id',
         'rua',
         'cep',
         'numero',

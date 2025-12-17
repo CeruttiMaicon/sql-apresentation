@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('email');
             $table->string('sexo');
             $table->string('celular');
+            $table->unsignedBigInteger('endereco_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('endereco_id')->references('id')->on('enderecos')->onDelete('set null');
         });
     }
 
