@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('enderecos', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('cidade_id');
-            $table->unsignedBigInteger('estado_id');
+            $table->id(); // bigInteger para suportar milhões de registros
+            $table->unsignedSmallInteger('cidade_id'); // smallInteger porque referencia cidades.id
+            $table->unsignedSmallInteger('estado_id'); // smallInteger porque referencia estados.id
             $table->string('rua');
             $table->string('cep');
             $table->string('numero');

@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clientes', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // bigInteger para suportar milhões de registros
             $table->string('nome');
             $table->string('email');
             $table->string('sexo');
             $table->string('celular');
-            $table->unsignedBigInteger('endereco_id')->nullable();
+            $table->unsignedBigInteger('endereco_id')->nullable(); // bigInteger porque referencia enderecos.id
             $table->timestamps();
 
             $table->foreign('endereco_id')->references('id')->on('enderecos')->onDelete('set null');
