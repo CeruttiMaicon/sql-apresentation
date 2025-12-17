@@ -29,24 +29,55 @@ class EstadoCidadeSeeder extends Seeder
         $progressEstados->setFormat(' Estados: %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%');
         $progressEstados->start();
 
+        $estadosCriados = 0;
+        $estadosExistentes = 0;
+        $cidadesCriadas = 0;
+        $cidadesExistentes = 0;
+
         foreach ($estadosCidades as $estadoData) {
-            $estado = Estado::create([
-                'nome' => $estadoData['nome'],
-                'sigla' => $estadoData['sigla'],
-            ]);
+            // Usar firstOrCreate para evitar duplicatas (verifica por sigla que é única)
+            $estado = Estado::firstOrCreate(
+                ['sigla' => $estadoData['sigla']],
+                [
+                    'nome' => $estadoData['nome'],
+                    'sigla' => $estadoData['sigla'],
+                ]
+            );
+
+            if ($estado->wasRecentlyCreated) {
+                $estadosCriados++;
+            } else {
+                $estadosExistentes++;
+            }
 
             foreach ($estadoData['cidades'] as $cidadeNome) {
-                Cidade::create([
-                    'nome' => $cidadeNome,
-                    'id_estado' => $estado->id,
-                ]);
+                // Usar firstOrCreate para evitar duplicatas (verifica por nome e id_estado)
+                $cidade = Cidade::firstOrCreate(
+                    [
+                        'nome' => $cidadeNome,
+                        'id_estado' => $estado->id,
+                    ],
+                    [
+                        'nome' => $cidadeNome,
+                        'id_estado' => $estado->id,
+                    ]
+                );
+
+                if ($cidade->wasRecentlyCreated) {
+                    $cidadesCriadas++;
+                } else {
+                    $cidadesExistentes++;
+                }
             }
 
             $progressEstados->advance();
         }
 
         $progressEstados->finish();
-        echo "\n\n✓ {$totalEstados} estados e {$totalCidades} cidades criados com sucesso!\n";
+        echo "\n\n";
+        echo "✓ Estados: {$estadosCriados} criados, {$estadosExistentes} já existiam\n";
+        echo "✓ Cidades: {$cidadesCriadas} criadas, {$cidadesExistentes} já existiam\n";
+        echo "✓ Total: {$totalEstados} estados e {$totalCidades} cidades processados\n";
     }
 
     /**
