@@ -27,6 +27,6 @@ class DatabaseSeeder extends Seeder
 
         // Exemplo: Criar 2 milhões de clientes
         // Ou com quantidade customizada:
-        (new ClienteSeeder())->quantidade(2000000)->run();
+        (new ClienteSeeder())->quantidade(1500000)->run();
     }
 }
